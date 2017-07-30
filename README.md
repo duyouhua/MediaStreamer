@@ -1,5 +1,8 @@
 # MediaStreamer
-Rip Movies to your computer and stream to your Xbox one, another computer, and Windows IOT on your local network
+Rip Movies to your computer and stream to your Xbox one, another computer, and Windows IOT on your local network.
+
+## Note
+This project is a weekend project and does not follow any patterns or practices like most of my open source projects :) If you want to update it and help me our feel free.
 
 ## What does this fix?
 I have a bunch of DVDs (especially kids movies) that I wanted to store on my old PC and have them streamed to my Xbox One. 
@@ -11,4 +14,4 @@ MAKEMKV - is used to Rips the disc
 FFMPEG - is used to convert the MKV files to MP4 for UWP app
 
 ## Legal stuff
-Please do not rip movies that are not your own. I use this project as a way to backup my own media to my own computer to watch it on my own device on my own network. I am not responsible for anything you do or create with this project.
+Please only rip discs that are your own. I am not responsible for anything illegal you attempt to do with this software. Please feel free to clone this project and change it in anyway that feels your need. I wrote this project to share with everyone!
