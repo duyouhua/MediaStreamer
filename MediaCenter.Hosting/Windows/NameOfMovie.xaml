@@ -1,0 +1,14 @@
+﻿<Window x:Class="MediaCenter.Hosting.Windows.NameOfMovie"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MediaCenter.Hosting.Windows"
+        mc:Ignorable="d"
+        Title="Movie Name" Height="96.61" Width="300" WindowStyle="None" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" ShowInTaskbar="False">
+    <Grid>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="154,64,0,0" VerticalAlignment="Top" Width="128" Click="btnSave_Click"/>
+        <TextBox x:Name="txtNameOfDisc" HorizontalAlignment="Left" Height="23" Margin="10,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="272"/>
+        <TextBlock Margin="10,10,10,0" TextWrapping="Wrap" Text="What is the name of the movie your are copying?" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
