@@ -12,7 +12,7 @@ namespace MediaCenter.Hosting.Services
     {
         void Abort();
         string GetDiscName();
-        void RipDVD(string RipPath, string DiscName);
+        Task RipDVD(string RipPath, string DiscName);
 
         event TitleCopiedDelegate TitleCopied;
         event RippingCompletedDelegate RippingCompleted;
@@ -40,7 +40,7 @@ namespace MediaCenter.Hosting.Services
 
         private int RipIndex = 0;
 
-        public async void RipDVD(string RipPath, string DiscName)
+        public async Task RipDVD(string RipPath, string DiscName)
         {
             await Task.Run(() =>
             {
@@ -57,7 +57,7 @@ namespace MediaCenter.Hosting.Services
                     Directory.CreateDirectory(pathToRip);
                 }
 
-                var proc = ExecuteCommandLine("mkv disc:0 all " + pathToRip);
+                var proc = ExecuteCommandLine("mkv disc:0 all \"" + pathToRip + "\"");
                 while (!proc.StandardOutput.EndOfStream)
                 {
                     string line = proc.StandardOutput.ReadLine();

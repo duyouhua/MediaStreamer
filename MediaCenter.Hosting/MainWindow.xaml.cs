@@ -6,18 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace MediaCenter.Hosting
@@ -76,7 +67,7 @@ namespace MediaCenter.Hosting
         {
             if (isEjected == false)
             {
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(async delegate
                 {
                     this.Hide();
 
@@ -86,12 +77,10 @@ namespace MediaCenter.Hosting
                     movieName.ShowDialog();
 
                     // show the progress window
-                    
-                    
                     progressWindow.Show();
 
                     // rip the movie
-                    ripDVDService.RipDVD(@"C:\MediaStreamer\Content\Queue", movieName.DiscName);
+                    await ripDVDService.RipDVD(@"C:\MediaStreamer\Content\Queue", movieName.DiscName);
                 }));
             }
         }
@@ -177,7 +166,7 @@ namespace MediaCenter.Hosting
                     Directory.Delete(dir, true);
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }

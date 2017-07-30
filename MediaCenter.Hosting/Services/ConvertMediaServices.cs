@@ -1,5 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MediaCenter.Hosting.Services
 {
@@ -24,40 +28,49 @@ namespace MediaCenter.Hosting.Services
 
         public void Convert(string source)
         {
-            var movieFiles = Directory.GetFiles(source);
-            var index = 1;
-            foreach (var movie in movieFiles)
-            {
-                var fi = new FileInfo(movie);
-                var name = fi.Name.Replace(".mkv", "");
-
-                var moviePath = movie.Replace(fi.Name, "");
-                
-                var dir = new DirectoryInfo(moviePath);
-                var dirName = dir.Name;
-
-                if (!Directory.Exists(ConvertLocation + dirName))
+            //Task.Run(() =>
+            //{
+                var movieFiles = Directory.GetFiles(source);
+                var index = 1;
+                foreach (var movie in movieFiles)
                 {
-                    Directory.CreateDirectory(ConvertLocation + dirName);
+                    var fi = new FileInfo(movie);
+                    var name = fi.Name.Replace(".mkv", "");
+
+                    var moviePath = movie.Replace(fi.Name, "");
+
+                    var dir = new DirectoryInfo(moviePath);
+                    var dirName = dir.Name;
+
+                    if (!Directory.Exists(ConvertLocation + dirName))
+                    {
+                        Directory.CreateDirectory(ConvertLocation + dirName);
+                    }
+
+                    var proc = ExecuteCommandLine("-i \"" + movie + "\" -vcodec copy -acodec copy \"C:\\MediaStreamer\\Content\\DVDs\\" + dirName + "\\" + name + ".mp4\"");
+                    while (!proc.StandardOutput.EndOfStream)
+                    {
+                        string line = proc.StandardOutput.ReadLine();
+                    }
+
+                    System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
+                    {
+                        //covert completed
+                        if (ConvertMediaProgress != null)
+                        {
+                            ConvertMediaProgress(index, movieFiles.Length);
+                        }
+                    }));
                 }
 
-                var proc = ExecuteCommandLine("-i " + movie + " -vcodec copy -acodec copy C:\\MediaStreamer\\Content\\DVDs\\" + dirName + "\\" + name + ".mp4");
-                while (!proc.StandardOutput.EndOfStream)
+                System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new ThreadStart(delegate
                 {
-                    string line = proc.StandardOutput.ReadLine();
-                }
-                
-                //covert completed
-                if (ConvertMediaProgress != null)
-                {
-                    ConvertMediaProgress(index, movieFiles.Length);
-                }
-            }
-
-            if (ConvertMediaCompleted != null)
-            {
-                ConvertMediaCompleted();
-            }
+                    if (ConvertMediaCompleted != null)
+                    {
+                        ConvertMediaCompleted();
+                    }
+                }));
+            //});
         }
 
         private Process proc = null;
